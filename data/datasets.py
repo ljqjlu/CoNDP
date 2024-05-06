@@ -27,9 +27,9 @@ class ODEDataset(Dataset):
             with open(osp.join(self.data_path, "trajs_train.pkl"), 'rb') as f:
                 self.trajs_train = pickle.load(f)
             f.close()
-            self.trajs_cond = int(len(self.trajs_train) / len(self.trajs_cond)) * self.trajs_cond
+            self.trajs_cond = len(self.trajs_train)
             self.cond_len = len(self.trajs_cond)
-            self.trajs = self.trajs_cond + self.trajs_train
+            self.trajs = self.trajs_train
         elif mode == "indomain":
             with open(osp.join(self.data_path, f"trajs_train.pkl"), 'rb') as f:
                 self.trajs = pickle.load(f)
@@ -51,8 +51,6 @@ class ODEDataset(Dataset):
         x = traj_dict["x"]
         y = traj_dict["y"]
         i = traj_dict["index"]
-        if index >= self.cond_len:
-            i = i + self.n_env_test
         return x, y, i
         # return self.trajs[index]
 
